@@ -9,12 +9,11 @@
 </head>
 
 <body>
-  <div id="paper"></div>
-  <div class="s c">
+  <div id="paper" style="height: 650px; width: 650px; position: absolute; top:0; bottom: 0; left: 0;right: 0;margin: auto;">
       <div><b>Tactics Board by <a href="http://www.twitter.com/cl_ftbl" target="_blank">@cl_ftbl</a></b></div>
       <p />
       <div id="example" style="float:left; margin:0 auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;)"></div>
-      <div id="option" style="margin:0 auto; float:left; padding: 0px 0px 0px 10px">
+      <div id="option" style="margin:0 auto; float:left; padding: 0px 0px 0px 10px; max-width: 200px;">
         <div style="padding: 0px 0px 4px 0px;"><b>Home Colour:</b></div>
             <div>
             <select id="t1Prim" onchange="grabCol()">
@@ -71,11 +70,19 @@
             </select>
              Secondary</div>
         <p />
-        <div style="margin-bottom:5px;"></div>
+        <div style="margin-bottom:5px;"><b>Show/Hide:</b></div>
         <div style="margin-bottom:5px;"><button id="show/hide" onclick="hideAway();" value="Hide">Hide</button> Away Team</div>
         <div style="margin-bottom:5px;"> <button id="hs" onclick="showHS();" value="Hidden">Show</button> Half Space</div>
         <div style="margin-bottom:5px;"> <button id="da" onclick="ChooseFunc();" value="NoDraw">Draw</button> Draw Arrows</div>
-      </div>
+        <div style="margin-bottom:20px;"></div>
+        <div style="margin-bottom:5px;"> 
+        <b>Instructions:</b>
+        <div style="margin-bottom:5px;"><i>Drag Player:</i> Press & Hold any circle to drag to a new position.</div>
+        <div style="margin-bottom:5px;"><i>Change Name:</i> Double click on any text name for prompt to change.</div>
+        <div style="margin-bottom:20px;"><i>Draw Arrow:</i> Press 'draw' button to turn on drawing, press 'stop' to turn off.</div>
+        <div style="margin-bottom:5px;"><i> Please tweet any bugs, improvements or new feature requests to <a href="http://www.twitter.com/cl_ftbl" target="_blank">@cl_ftbl</a></div>
+    
+        </div>
   </div>
 </body>
 
