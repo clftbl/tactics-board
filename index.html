@@ -1,0 +1,432 @@
+<html lang="en">
+<title>Tactics Board @cl_ftbl</title>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://giottojs.org/d3-canvas-transition/0.3.6/d3-canvas-transition.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/style.css?q=1280549780">
+</head>
+
+<body>
+  <div id="paper"></div>
+  <div class="s c">
+      <div><b>Tactics Board by <a href="http://www.twitter.com/cl_ftbl" target="_blank">@cl_ftbl</a></b></div>
+      <p />
+      <div id="example" style="float:left; margin:0 auto; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;)"></div>
+      <div id="option" style="margin:0 auto; float:left; padding: 0px 0px 0px 10px">
+        <div style="padding: 0px 0px 4px 0px;"><b>Home Colour:</b></div>
+            <div>
+            <select id="t1Prim" onchange="grabCol()">
+              <option value="Blue">Blue</option>
+              <option value="Red" selected="selected">Red</option>
+              <option value="Yellow">Yellow</option>
+              <option value="White">White</option>
+              <option value="Black">Black</option>
+              <option value="#017DC3">Light Blue</option>
+              <option value="#BDFD5E">Neon Green</option>
+              <option value="#A83249">Maroon</option>
+              <option value="#00ACDD">Alt Blue</option>
+           </select>
+             Primary</div>
+            <div>
+            <select id="t2Prim" onchange="grabColS()">
+              <option value="Blue">Blue</option>
+              <option value="Red" >Red</option>
+              <option value="Yellow">Yellow</option>
+              <option value="White">White</option>
+              <option value="Black" selected="selected">Black</option>
+              <option value="#017DC3">Light Blue</option>
+              <option value="#BDFD5E">Neon Green</option>
+              <option value="#A83249">Maroon</option>
+              <option value="#00ACDD">Alt Blue</option>
+            </select>
+             Secondary</div>
+        <p />
+        <div class="SecondTeam" style="padding: 0px 0px 4px 0px;"><b>Away Colour:</b></div>
+            <div class="SecondTeam">
+            <select id="At1Prim" onchange="AgrabCol()">
+              <option value="Blue">Blue</option>
+              <option value="Red">Red</option>
+              <option value="Yellow" selected="selected">Yellow</option>
+              <option value="White">White</option>
+              <option value="Black">Black</option>
+              <option value="#017DC3">Light Blue</option>
+              <option value="#BDFD5E">Neon Green</option>
+              <option value="#A83249">Maroon</option>
+              <option value="#00ACDD">Alt Blue</option>
+            </select>
+             Primary</div>
+            <div class="SecondTeam">
+            <select id="At2Prim" onchange="AgrabColS()">
+              <option value="Blue">Blue</option>
+              <option value="Red" >Red</option>
+              <option value="Yellow">Yellow</option>
+              <option value="White">White</option>
+              <option value="Black" selected="selected">Black</option>
+              <option value="#017DC3">Light Blue</option>
+              <option value="#BDFD5E">Neon Green</option>
+              <option value="#A83249">Maroon</option>
+              <option value="#00ACDD">Alt Blue</option>
+            </select>
+             Secondary</div>
+        <p />
+        <div style="margin-bottom:5px;"></div>
+        <div style="margin-bottom:5px;"><button id="show/hide" onclick="hideAway();" value="Hide">Hide</button> Away Team</div>
+        <div style="margin-bottom:5px;"> <button id="hs" onclick="showHS();" value="Hidden">Show</button> Half Space</div>
+        <div style="margin-bottom:5px;"> <button id="da" onclick="ChooseFunc();" value="NoDraw">Draw</button> Draw Arrows</div>
+      </div>
+  </div>
+</body>
+
+<script>
+var PrimCol1 = "red"
+    SeconCol1 = "black"
+    PrimCol2 = "Yellow"
+    SeconCol2 = "Black"
+
+var data = [
+  {type: "Circle", id: 1, pText: "GK", x: 184, y: 515, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "RB", x: 330, y: 400, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "RCB", x: 250, y: 453, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "LCB", x: 118, y: 453, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "LB", x: 38, y: 400, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "RM", x: 330, y: 240, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "RCM", x: 250, y: 323, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "LCM", x: 118, y: 323, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "LM", x: 38, y: 240, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "RS", x: 250, y: 183, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 1, pText: "LS", x: 118, y: 183, PC: PrimCol1, SC: SeconCol1},
+  {type: "Circle", id: 2, pText: "GK", x: 184, y: 68, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "RB", x: 38, y: 183, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "RCB", x: 118, y: 130, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "LCB", x: 250, y: 130, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "LB", x: 330, y: 183, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "RM", x: 38, y: 343, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "RCM", x: 118, y: 270, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "LCM", x: 250, y: 270, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "LM", x: 330, y: 343, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "RS", x: 118, y: 400, PC: PrimCol2, SC: SeconCol2},
+  {type: "Circle", id: 2, pText: "LS", x: 250, y: 400, PC: PrimCol2, SC: SeconCol2}
+];   
+
+var example = d3.select("#example"),
+    width = 368, // Width of Pitch
+    height = 583, // Height of Pitch
+    radius = 9, // Size of Circles
+    area = Math.PI*radius*radius,
+    margin = 2*radius,
+    text = '';
+
+function ChooseFunc() {
+    var p3 = document.getElementById('da').value;
+    if (p3 == "NoDraw"){
+        addArrows();
+        document.getElementById('da').value = "Drawing";
+        document.body.style.cursor = 'crosshair';
+        window.getSelection().removeAllRanges();
+        document.getElementById('da').innerHTML = "Stop";
+    } else {
+        var vis = example.select('.paper')
+            .on("mousedown", "")
+            .on("mouseup", "");
+        document.getElementById('da').value = "NoDraw";
+        document.body.style.cursor = '';
+        document.getElementById('da').innerHTML = "Draw";
+    }
+}    
+
+function addArrows() {    
+    var line;
+    var vis = example.select('.paper')
+        .on("mousedown", mousedown)
+        .on("mouseup", mouseup);
+
+    function mousedown() {
+        var m = d3.mouse(this);
+        line = vis.append("line")
+            .attr("x1", m[0])
+            .attr("y1", m[1])
+            .attr("x2", m[0])
+            .attr("y2", m[1])
+            .style("stroke-dasharray", "5, 5");
+        
+        vis.on("mousemove", mousemove);
+    }
+    
+    function mousemove() {
+        var m = d3.mouse(this);
+        line.attr("x2", m[0])
+            .attr("y2", m[1]);
+    }
+    
+    function mouseup() {
+        vis.on("mousemove", null);
+    }
+} 
+    
+// Change Home Primary Colour
+function grabCol() {
+    var col = document.getElementById('t1Prim').value;
+    var link = d3.selectAll('[id="1"]');
+    link.select("path").style("fill", col);
+}   
+
+// Change Home Secondary Colour
+function grabColS() {
+    var col = document.getElementById('t2Prim').value;
+    var link = d3.selectAll('[id="1"]');
+    link.select("path").style("stroke", col);
+}  
+
+// Change Away Primary Colour
+function AgrabCol() {
+    var col = document.getElementById('At1Prim').value;
+    var link = d3.selectAll('[id="2"]');
+    link.select("path").style("fill", col);
+}   
+
+// Change Home Secondary Colour
+function AgrabColS() {
+    var col = document.getElementById('At2Prim').value;
+    var link = d3.selectAll('[id="2"]');
+    link.select("path").style("stroke", col);
+} 
+
+// Show or Hide the Away Team
+function hideAway() {
+    var p = document.getElementById('show/hide').value;
+    if (p == "Hide"){
+        var link = d3.selectAll('[id="2"]');
+        link.style("visibility", "hidden");
+        document.getElementById('show/hide').value = "Show"
+        document.getElementById('show/hide').innerHTML = "Show";
+        document.getElementsByClassName('SecondTeam')[0].style.display = 'none';
+        document.getElementsByClassName('SecondTeam')[1].style.display = 'none';
+        document.getElementsByClassName('SecondTeam')[2].style.display = 'none';
+    } else {
+        var link = d3.selectAll('[id="2"]');
+        link.style("visibility", "visible");
+        document.getElementById('show/hide').value = "Hide"
+        document.getElementById('show/hide').innerHTML = "Hide";
+        document.getElementsByClassName('SecondTeam')[0].style.display = 'block';
+        document.getElementsByClassName('SecondTeam')[1].style.display = 'block';
+        document.getElementsByClassName('SecondTeam')[2].style.display = 'block';
+    }
+}
+
+// Show or Hide the Half Space
+function showHS() {
+    var p2 = document.getElementById('hs').value;
+    if (p2 == "Hidden"){
+        var link2 = d3.selectAll(".half-space");
+        link2.style("opacity", 1);
+        document.getElementById('hs').value = "Shown"
+        document.getElementById('hs').innerHTML = "Hide";
+
+    } else {
+        var link2 = d3.selectAll(".half-space");
+        link2.style("opacity", 0);
+        document.getElementById('hs').value = "Hidden"
+        document.getElementById('hs').innerHTML = "Show";
+    }
+}
+
+draw('svg');
+
+function draw(type, r) {
+    example.select('.paper').remove();
+    var paper = example
+        .append(type)
+        .classed('paper', true)
+        .style('stroke', '#333')
+        .attr('width', width).attr('height', height).canvasResolution(r).canvas(true);
+
+    var marks = d3.symbol().type(function (d) {return d3['symbol' + d.type];}).size(function (d) {return area;});
+
+    // Pitch Background Information
+    paper.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', height)
+        .style("stroke-width", 0)
+        .style('fill', 'White')
+        .style('fill-opacity', 1);
+
+    // Pitch Markings
+    paper.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', height)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)
+
+    // Far Left Half Space
+     paper.append('line')
+        .style("opacity", 0)
+        .style("stroke", 'Red')
+        .style("stroke-width", 0.25)
+        .style("stroke-dasharray", ("3, 3"))
+        .classed("half-space", true)
+        .attr("x1", width*0.2)
+        .attr("y1", 0)
+        .attr("x2", width*0.2)
+        .attr("y2", height);
+
+    // Left Half Space
+     paper.append('line')
+        .style("opacity", 0)
+        .style("stroke", 'Red')
+        .style("stroke-width", 0.25)
+        .style("stroke-dasharray", ("3, 3"))
+        .classed("half-space", true)
+        .attr("x1", width*0.357)
+        .attr("y1", 0)
+        .attr("x2", width*0.357)
+        .attr("y2", height); 
+
+    // Right Half Space
+     paper.append('line')
+        .style("opacity", 0)
+        .style("stroke", 'Red')
+        .style("stroke-width", 0.25)
+        .style("stroke-dasharray", ("3, 3"))
+        .classed("half-space", true)
+        .attr("x1", width*0.643)
+        .attr("y1", 0)
+        .attr("x2", width*0.643)
+        .attr("y2", height); 
+
+    // Far Right Half Space
+     paper.append('line')
+        .style("opacity", 0)
+        .style("stroke", 'Red')
+        .style("stroke-width", 0.25)
+        .style("stroke-dasharray", ("3, 3"))
+        .classed("half-space", true)
+        .attr("x1", width*0.8)
+        .attr("y1", 0)
+        .attr("x2", width*0.8)
+        .attr("y2", height); 
+                
+    // Six Yard Top
+    paper.append('rect')
+        .attr('x', width*0.368)
+        .attr('y', 0)
+        .attr('width', width*0.264)
+        .attr('height', height*0.058)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)
+    
+    // Six Yard Bottom
+    paper.append('rect')
+        .attr('x', width*0.368)
+        .attr('y', height-(height*0.058))
+        .attr('width', width*0.264)
+        .attr('height', height*0.058)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)        
+        
+    // Penalty Area Top
+    paper.append('rect')
+        .attr('x', width*0.211)
+        .attr('y', 0)
+        .attr('width', width*0.578)
+        .attr('height', height*0.17)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)
+        
+    // Penalty Area Bottom
+    paper.append('rect')
+        .attr('x', width*0.211)
+        .attr('y', height-(height*0.17))
+        .attr('width', width*0.578)
+        .attr('height', height*0.17)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)
+        
+    // Centre Circle
+    paper.append('circle')
+        .attr('cx', width*0.5)
+        .attr('cy', height*0.5)
+        .attr('r', 40)
+        .style("stroke-width", 0.5)
+        .style('fill-opacity', 0)
+    
+    // Centre Line
+     paper.append('line')
+        .style("opacity", 1)
+        .style("stroke-width", 0.5)
+        .attr("x1", 0)
+        .attr("y1", height*0.5)
+        .attr("x2", width)
+        .attr("y2", height*0.5);
+
+    // Plot the Circles
+    var groups = paper
+        .selectAll(".group-drag")//selector using class
+        .data(data)//attach data to selection
+        .enter()
+        .append("g")//add as many groups as data  
+        .attr("id", function(d){return d.id})       
+        .attr("transform", translate)//give translate to the group
+        .style("display", "visible") // Visible or None
+        .classed("group-drag", true)//add class to the group
+        .on("mouseenter.hover", mouseenter)//attach listener to the group
+        .on("mouseleave.hover", end)
+        .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", mouseenter));
+    
+    groups.append('text')
+    .attr("dy", 20)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "normal")
+    .text(function(d){return d.pText})
+    .on("dblclick",changeText);        
+
+    groups.append("path")
+    .attr("d", marks)
+    .style("fill", function(d){return d.PC})
+    .style("stroke", function(d){return d.SC})
+    .style("stroke-width", '2px')  
+        
+    function mouseenter () {
+        d3.select(this).style('cursor', 'move');
+    }
+
+    function dragstarted () {
+        d3.select(this).select("path").raise().style('stroke-width', '4px');
+    }
+
+    function dragged(d) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d3.select(this).attr("transform", translate(d));
+    }
+
+    function end() {
+        var el = d3.select(this),
+            d = el.datum();
+        el.select("path").style('cursor', 'default').style('stroke-width', '2px');
+    }
+
+    function translate (d) {
+        return "translate(" + d.x + "," + d.y + ")";
+    }
+    
+    function changeText() {
+        var pName = prompt("Enter Name");
+        if (pName == null || pName == "") {
+            pName = function(d){return d.pText};
+        }
+        d3.select(this).text(pName);       
+    }   
+}
+
+</script>
+</html>
